@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace TicTacToe
 {
     /// <summary>
@@ -22,27 +23,31 @@ namespace TicTacToe
     {
         private bool isPlayer1Turn = true;
         private Button[,] buttons;
+        TextBlock block;
 
         public MainWindow()
         {
             InitializeComponent();
             buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };
+            block = textBlock1;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
 
-            if (button.Content.ToString() != "") return;    //Only allows is the space is empty
+            if (button.Content.ToString() != "") return;    //Checks if the button is empty, skips code if it's not
 
             //Changes the players
             if (isPlayer1Turn)
             {
                 button.Content = "X";
+                block.Text = "It's Player 2 Turn!";
             }
             else
             {
                 button.Content = "O";
+                block.Text = ("It's Player 1 Turn!");
             }
             isPlayer1Turn = !isPlayer1Turn;
             CheckForWinner();
@@ -50,16 +55,18 @@ namespace TicTacToe
 
         private void btnNewGame_Click(object sender, RoutedEventArgs e)
         {
+            //Resets each of the buttons
             foreach (Button button in buttons)
             {
                 button.Content = "";
             }
             isPlayer1Turn = true;
+            block.Text = "New Game! Player 1 starts.";
         }
 
         private void CheckForWinner()
         {
-            //Checks each row/column for
+            //Checks each row/column for-
             for (int i = 0; i < 3; i++)
             {
                 //the left to right
@@ -91,7 +98,7 @@ namespace TicTacToe
                 btnNewGame_Click(null, null);
                 return;
             }
-            //Checks for tie
+            //Checks for a tie
             if (buttons.Cast<Button>().All(b => b.Content.ToString() != ""))
             {
                 MessageBox.Show("It's a tie!");
