@@ -22,7 +22,7 @@
         <Button x:Name="btn20" Content="" Grid.Row="2" Grid.Column="0" FontSize="40" Click="Button_Click"/>
         <Button x:Name="btn21" Content="" Grid.Row="2" Grid.Column="1" FontSize="40" Click="Button_Click"/>
         <Button x:Name="btn22" Content="" Grid.Row="2" Grid.Column="2" FontSize="40" Click="Button_Click"/>
-        <Button x:Name="btnNewGame" Content="New Game" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="10,69,10,10" Click="btnNewGame_Click"/>
-        <TextBlock x:Name="textBlock1" Text="New Game! Player 1 starts." Height="20" Width="176" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="84,1,0,0" Background="Gainsboro"/>
+        <Button x:Name="btnNewGame" Content="New Game" Grid.Row="2" Grid.ColumnSpan="3" Margin="90,73,90,7" Click="btnNewGame_Click"/>
+        <TextBlock x:Name="textBlock1" Text="New Game! Player 1 starts." Height="20" Width="176" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="3" Margin="85,1,0,0" Background="Gainsboro"/>
     </Grid>
 </Window>
