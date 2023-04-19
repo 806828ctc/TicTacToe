@@ -21,24 +21,24 @@ namespace TicTacToe
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool isPlayer1Turn = true;
+        private bool isPlayer1Turn = true; //This makes it Players 1 turn to start.
         private Button[,] buttons;
         TextBlock block;
 
         public MainWindow()
         {
             InitializeComponent();
-            buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };
-            block = textBlock1;
+            buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };//How we access the buttons
+            block = textBlock1;//The textBlock that displays who's turn it is on the game
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
+            Button button = (Button)sender;//Gets the button that was clicked
 
-            if (button.Content.ToString() != "") return;    //Checks if the button is empty, skips code if it's not
+            if (button.Content.ToString() != "") return;    //Checks if the button is empty, returns if it's not
 
-            //Changes the players
+            //Updates the button clicked and the textBlock based off of who's turn it is 
             if (isPlayer1Turn)
             {
                 button.Content = "X";
@@ -49,7 +49,7 @@ namespace TicTacToe
                 button.Content = "O";
                 block.Text = ("       It's Player 1 Turn!");
             }
-            isPlayer1Turn = !isPlayer1Turn;
+            isPlayer1Turn = !isPlayer1Turn;//Changes who's turn it is 
             CheckForWinner();
         }
 
@@ -60,12 +60,15 @@ namespace TicTacToe
             {
                 button.Content = "";
             }
-            isPlayer1Turn = true; //Changes it to Player1 turn
+            isPlayer1Turn = true; //Changes it to Player 1 turn for new game
             block.Text = "New Game! Player 1 starts."; //Resets the text block
         }
 
         private void CheckForWinner()
         {
+            //Each of these loops check to see if there are three in a row that are the same symbol. If a win is found, it displays a MessageBox stating who
+            //won, starts a new game using the btnNewGame_Click method, and then returns. 
+
             //Checks each row/column for a win by..
             for (int i = 0; i < 3; i++)
             {
