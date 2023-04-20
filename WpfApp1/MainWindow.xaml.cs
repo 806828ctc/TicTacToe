@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -16,6 +17,7 @@ using System.Windows.Shapes;
 
 namespace TicTacToe
 {
+    using System.Threading;
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -23,13 +25,16 @@ namespace TicTacToe
     {
         private bool isPlayer1Turn = true; //This makes it Players 1 turn to start.
         private Button[,] buttons;
-        TextBlock block;
+        TextBlock turnBlock, winBlock, playBlock;
+        int count = 0;
 
         public MainWindow()
         {
             InitializeComponent();
             buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };//How we access the buttons
-            block = textBlock1;//The textBlock that displays who's turn it is on the game
+            turnBlock = textBlock1;//The textBlock that displays who's turn it is on the game
+            winBlock = winnerBlock;
+            playBlock = playerBlock;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -42,15 +47,22 @@ namespace TicTacToe
             if (isPlayer1Turn)
             {
                 button.Content = "X";
-                block.Text = "       It's Player 2 Turn!";
+                turnBlock.Text = "       It's Player 2 Turn!";
             }
             else
             {
                 button.Content = "O";
-                block.Text = ("       It's Player 1 Turn!");
+                turnBlock.Text = ("       It's Player 1 Turn!");
             }
             isPlayer1Turn = !isPlayer1Turn;//Changes who's turn it is 
             CheckForWinner();
+            count++;
+
+            if (count > 3)
+            {
+                winBlock.Text = " "; 
+                playBlock.Text = " ";
+            }
         }
 
         private void btnNewGame_Click(object sender, RoutedEventArgs e)
@@ -61,8 +73,11 @@ namespace TicTacToe
                 button.Content = "";
             }
             isPlayer1Turn = true; //Changes it to Player 1 turn for new game
-            block.Text = "New Game! Player 1 starts."; //Resets the text block
+            turnBlock.Text = "New Game! Player 1 starts."; //Resets the text block
+            count = 0;
+
         }
+
 
         private void CheckForWinner()
         {
@@ -75,8 +90,12 @@ namespace TicTacToe
                 //each row, left to right
                 if (buttons[i, 0].Content.ToString() != "" && buttons[i, 0].Content == buttons[i, 1].Content && buttons[i, 1].Content == buttons[i, 2].Content)
                 {
-                    MessageBox.Show($"{buttons[i, 0].Content} wins!");
+                    //MessageBox.Show($"{buttons[i, 0].Content} wins!");
+                    string play = buttons[i, 0].Content.ToString();
+                    playBlock.Text = ($"{play} won!");
+                    winBlock.Text = "There's a winner!!";
                     btnNewGame_Click(null, null);
+                   
                     return;
                 }
                 //each column, up and down
