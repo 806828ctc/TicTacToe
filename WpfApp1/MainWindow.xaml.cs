@@ -25,18 +25,19 @@ namespace TicTacToe
     public partial class MainWindow : Window
     {
         private bool isPlayer1Turn = true, isRandomGame = false, winner = false; //This makes it Players 1 turn to start.
-        private Button[,] buttons;
+        private readonly Button[,] buttons;
         private int count = 0;
-        TextBlock turnBlock, playBlock, modeBlock;
-        Random random = new Random();
+        private readonly TextBlock turnBlock, playBlock, modeBlock;
+        readonly Random random = new();
+
 
         public MainWindow()
         {
             InitializeComponent();
             buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };//How we access the buttons
             turnBlock = textBlock1;//The textBlock that displays who's turn it is on the game
-            playBlock = playerBlock;//The block that displays when someone has won
-            modeBlock = playerModeBlock;//Shows the players which mode the game is currently in
+            playBlock = PlayerBlock;//The block that displays when someone has won
+            modeBlock = PlayerModeBlock;//Shows the players which mode the game is currently in
             modeBlock.Text = "PVP Mode";//Displays that the game starts in Player VS Player mode
             playBlock.Foreground = Brushes.Green;
         }
@@ -70,19 +71,20 @@ namespace TicTacToe
                     turnBlock.Text = "     Computer Thinking..";
                     isPlayer1Turn =false;
                     CheckForWinner();//Checks to see if Player1 had just won or not
-
+                        
+                    await Task.Delay(750);
                     if (winner == false)
                     {
-                        await Task.Delay(1500);
-                        playRandom();
+                        PlayRandom();
                         turnBlock.Text = ("      It's Player 1 Turn!");
                         isPlayer1Turn = true;
+                       
                     }
                 }
             }
 
-            winner = false;
             CheckForWinner();
+            //winner = false;
             count++;
 
 
@@ -92,34 +94,34 @@ namespace TicTacToe
             }
         }
 
-        private void playRandom()
+        private void PlayRandom()
         {
             int x = random.Next(0, 3), y = random.Next(0, 3);//Uses random numbers to pick a button
             if (buttons[x,y].Content.ToString() != "") {//If that button is already used it calls this method again
-                playRandom();
+                PlayRandom();
             }
             else {
                 buttons[x,y].Content = "O"; //When it finds a button to play on, places their turn
             } 
         }
 
-        private void playerButton_Click(object sender, RoutedEventArgs e)
+        private void PlayerButton_Click(object? sender, RoutedEventArgs? e)
         {
             //Changes the game mode to PVP instead of PVComp
-            btnNewGame_Click(null, null);
+            BtnNewGame_Click(null, null);
             isRandomGame = false;
             modeBlock.Text = "PVP Mode";
         }
 
-        private void computerButton_Click(object sender, RoutedEventArgs e)
+        private void ComputerButton_Click(object? sender, RoutedEventArgs? e)
         {
             //Changes to PVComp mode instead of PVP
-            btnNewGame_Click(null, null);
+            BtnNewGame_Click(null, null);
             isRandomGame = true;
             modeBlock.Text = "PVComp Mode";
         }
 
-        private void btnNewGame_Click(object sender, RoutedEventArgs e)
+        private void BtnNewGame_Click(object? sender, RoutedEventArgs? e)
         {
             //Resets each of the buttons to be empty and using the color black
             foreach (Button button in buttons)
@@ -131,19 +133,20 @@ namespace TicTacToe
             isPlayer1Turn = true; //Changes it to Player 1 turn for new game
             turnBlock.Text = "New Game! Player 1 starts."; //Resets the text block
             count = 0;//Starts over counter
+            winner = false;
 
         }
 
-        private async void displayWin(string play)
+        private async void DisplayWin(string play)
         {
-            await Task.Delay(1000);
-            playBlock.Text = ($"{play} won!");
-            winner = true;
             foreach(Button button in buttons)
             {
                 button.IsEnabled = false;
             }
-            btnNewGame_Click(null, null);
+            await Task.Delay(750);
+            playBlock.Text = ($"{play} won!");
+            winner = true;
+            BtnNewGame_Click(null, null);
         }
 
 
@@ -160,12 +163,12 @@ namespace TicTacToe
                 //each row, left to right
                 if (buttons[i, 0].Content.ToString() != "" && buttons[i, 0].Content == buttons[i, 1].Content && buttons[i, 1].Content == buttons[i, 2].Content)
                 {
-                   //MessageBox.Show($"{buttons[i, 0].Content} wins!");
+                    //MessageBox.Show($"{buttons[i, 0].Content} wins!"); 
                     play = buttons[i, 0].Content.ToString();
                     buttons[i, 0].Foreground = Brushes.ForestGreen;
                     buttons[i, 1].Foreground = Brushes.ForestGreen;
                     buttons[i, 2].Foreground = Brushes.ForestGreen;
-                    displayWin(play);
+                    DisplayWin(play);
                     return;
                 }
                 //each column, up and down
@@ -175,7 +178,7 @@ namespace TicTacToe
                     buttons[0, i].Foreground = Brushes.ForestGreen;
                     buttons[1, i].Foreground = Brushes.ForestGreen;
                     buttons[2, i].Foreground = Brushes.ForestGreen;
-                    displayWin(play);
+                    DisplayWin(play);
                     return;
                 }
             }
@@ -186,7 +189,7 @@ namespace TicTacToe
                 buttons[0, 0].Foreground = Brushes.ForestGreen;
                 buttons[1, 1].Foreground = Brushes.ForestGreen;
                 buttons[2, 2].Foreground = Brushes.ForestGreen;
-                displayWin(play);
+                DisplayWin(play);
                 return;
             }
             //Diagonal top left to bottom right
@@ -196,16 +199,16 @@ namespace TicTacToe
                 buttons[0, 2].Foreground = Brushes.ForestGreen;
                 buttons[1, 1].Foreground = Brushes.ForestGreen;
                 buttons[2, 0].Foreground = Brushes.ForestGreen;
-                displayWin(play);
+                DisplayWin(play);
                 return;
             }
             //Checks for a tie (if all of the buttons are full and there was no win)
             if (buttons.Cast<Button>().All(b => b.Content.ToString() != ""))
             {
-                playBlock.Text = ("Tie!!");
                 winner = true; 
-                await Task.Delay(1000);
-                btnNewGame_Click(null, null);
+                await Task.Delay(750);
+                playBlock.Text = ("Tie!!");
+                BtnNewGame_Click(null, null);
                 return;
             }
         }
