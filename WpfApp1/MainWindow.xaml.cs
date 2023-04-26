@@ -207,6 +207,7 @@ namespace TicTacToe
             //Checks for a tie (if all of the buttons are full and there was no win)
             if (buttons.Cast<Button>().All(b => b.Content.ToString() != ""))
             {
+                foreach (Button button in buttons) { button.IsEnabled = false; }
                 winner = true;
                 await Task.Delay(750);
                 playBlock.Text = "Tie!!";
