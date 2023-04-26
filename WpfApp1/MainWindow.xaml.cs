@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Threading;
 
 
 
@@ -24,11 +14,11 @@ namespace TicTacToe
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool isPlayer1Turn = true, isRandomGame = false, winner = false; //This makes it Players 1 turn to start.
-        private readonly Button[,] buttons;
-        private int count = 0;
-        private readonly TextBlock turnBlock, playBlock, modeBlock;
-        readonly Random random = new();
+        private bool isPlayer1Turn = true, isRandomGame = false, winner = false; //When started, it's player 1 turn, not a random game, and no winner.
+        private readonly Button[,] buttons;//The list for the buttons
+        private readonly TextBlock turnBlock, playBlock, modeBlock;//The textBlocks used
+        private readonly Random random = new();//Random, used for computer plays
+        private int count = 0;//The count for how long it displays a win
 
 
         public MainWindow()
@@ -37,16 +27,19 @@ namespace TicTacToe
             buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };//How we access the buttons
             turnBlock = textBlock1;//The textBlock that displays who's turn it is on the game
             playBlock = PlayerBlock;//The block that displays when someone has won
+            playBlock.Foreground = Brushes.Green;//Sets it's color to green
             modeBlock = PlayerModeBlock;//Shows the players which mode the game is currently in
             modeBlock.Text = "PVP Mode";//Displays that the game starts in Player VS Player mode
-            playBlock.Foreground = Brushes.Green;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;//Gets the button that was clicked
 
-            if (button.Content.ToString() != "") return;//Checks if the button is empty, returns if it's not
+            if (button.Content.ToString() != "")
+            {
+                return;//Checks if the button is empty, returns if it's not
+            }
 
             if (!isRandomGame)//If the game is set to PVP mode
             {
@@ -59,27 +52,33 @@ namespace TicTacToe
                 else
                 {
                     button.Content = "O";
-                    turnBlock.Text = ("      It's Player 1 Turn!");
+                    turnBlock.Text = "      It's Player 1 Turn!";
                 }
                 isPlayer1Turn = !isPlayer1Turn;//Changes who's turn it is 
             }
             else//PVComp mode 
             {
-                if (isPlayer1Turn)
+                if (isPlayer1Turn)//Player 1 turn
                 {
                     button.Content = "X";
                     turnBlock.Text = "     Computer Thinking..";
-                    isPlayer1Turn =false;
+                    isPlayer1Turn = false;
                     CheckForWinner();//Checks to see if Player1 had just won or not
-                        
-                    await Task.Delay(750);
-                    if (winner == false)
+
+                    //This is when it's the computers turn
+                    if (winner == false)//If player 1 did not just win
                     {
-                        PlayRandom();
-                        turnBlock.Text = ("      It's Player 1 Turn!");
-                        isPlayer1Turn = true;
-                       
+                        await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
+                        if (winner == false)//This checks again that player 1 did not just win, it uses the time to check for a winner. 
+                        {//Sometimes it would still run even when player 1 had won, so this just checks again to make sure. 
+                            PlayRandom();
+                            turnBlock.Text = "      It's Player 1 Turn!";
+                            isPlayer1Turn = true;
+                            count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
+
+                        }
                     }
+
                 }
             }
 
@@ -88,7 +87,7 @@ namespace TicTacToe
             count++;
 
 
-            if (count > 3)
+            if (count > 2)//After three plays, the old win stops displaying.
             {
                 playBlock.Text = " ";
             }
@@ -97,12 +96,14 @@ namespace TicTacToe
         private void PlayRandom()
         {
             int x = random.Next(0, 3), y = random.Next(0, 3);//Uses random numbers to pick a button
-            if (buttons[x,y].Content.ToString() != "") {//If that button is already used it calls this method again
+            if (buttons[x, y].Content.ToString() != "")
+            {//If that button is already used it calls this method again
                 PlayRandom();
             }
-            else {
-                buttons[x,y].Content = "O"; //When it finds a button to play on, places their turn
-            } 
+            else
+            {
+                buttons[x, y].Content = "O"; //When it finds a button to play on, places it's turn
+            }
         }
 
         private void PlayerButton_Click(object? sender, RoutedEventArgs? e)
@@ -126,7 +127,7 @@ namespace TicTacToe
             //Resets each of the buttons to be empty and using the color black
             foreach (Button button in buttons)
             {
-                button.IsEnabled = true; 
+                button.IsEnabled = true;
                 button.Content = "";
                 button.Foreground = Brushes.Black;
             }
@@ -137,16 +138,17 @@ namespace TicTacToe
 
         }
 
-        private async void DisplayWin(string play)
+        private async void DisplayWin(string? play)
         {
-            foreach(Button button in buttons)
+            //Makes the buttons unusable after someone wins 
+            foreach (Button button in buttons)
             {
                 button.IsEnabled = false;
             }
-            await Task.Delay(750);
-            playBlock.Text = ($"{play} won!");
+            await Task.Delay(750);//Pauses to show which player won
+            playBlock.Text = $"{play} won!";
             winner = true;
-            BtnNewGame_Click(null, null);
+            BtnNewGame_Click(null, null);//Starts a new game
         }
 
 
@@ -154,9 +156,9 @@ namespace TicTacToe
         private async void CheckForWinner()
         {
             //If any of these loops finds a win, it changes the colors of the plays to green, so the win is easier to see. Then it waits a second, displays
-            //which player had won, and then starts a new game by using the btnNewGame_Click method
+            //which player had won, and then starts a new game by using the btnNewGame_Click method.
 
-            string play; 
+            string? play;// Used to show which player won
             //Checks each row/column for a win by..
             for (int i = 0; i < 3; i++)
             {
@@ -205,9 +207,9 @@ namespace TicTacToe
             //Checks for a tie (if all of the buttons are full and there was no win)
             if (buttons.Cast<Button>().All(b => b.Content.ToString() != ""))
             {
-                winner = true; 
+                winner = true;
                 await Task.Delay(750);
-                playBlock.Text = ("Tie!!");
+                playBlock.Text = "Tie!!";
                 BtnNewGame_Click(null, null);
                 return;
             }
