@@ -61,7 +61,7 @@ namespace TicTacToe
                 if (isPlayer1Turn)//Player 1 turn
                 {
                     button.Content = "X";
-                    turnBlock.Text = "     Computer Thinking..";
+                    turnBlock.Text = "   Computer Thinking..";
                     isPlayer1Turn = false;
                     CheckForWinner();//Checks to see if Player1 had just won or not
 
