@@ -17,19 +17,19 @@ namespace TicTacToe
         private bool isPlayer1Turn = true, isRandomGame = false, winner = false; //When started, it's player 1 turn, not a random game, and no winner.
         private readonly Button[,] buttons;//The list for the buttons
         private readonly TextBlock turnBlock, playBlock, modeBlock;//The textBlocks used
-        private readonly Random random = new();//Random, used for computer plays
+        private readonly Random random = new();//Random, used for the computers turns
         private int count = 0;//The count for how long it displays a win
 
 
         public MainWindow()
         {
             InitializeComponent();
-            buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };//How we access the buttons
+            buttons = new Button[,] { { btn00, btn01, btn02 }, { btn10, btn11, btn12 }, { btn20, btn21, btn22 } };//Getting access to the buttons
             turnBlock = textBlock1;//The textBlock that displays who's turn it is on the game
             playBlock = PlayerBlock;//The block that displays when someone has won
             playBlock.Foreground = Brushes.Green;//Sets it's color to green
             modeBlock = PlayerModeBlock;//Shows the players which mode the game is currently in
-            modeBlock.Text = "PVP Mode";//Displays that the game starts in Player VS Player mode
+            modeBlock.Text = "    PVP Mode";//Displays that the game starts off in Player VS Player mode
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -58,32 +58,22 @@ namespace TicTacToe
             }
             else//PVComp mode 
             {
-                if (isPlayer1Turn)//Player 1 turn
-                {
-                    button.Content = "X";
-                    turnBlock.Text = "   Computer Thinking..";
-                    isPlayer1Turn = false;
-                    CheckForWinner();//Checks to see if Player1 had just won or not
+                //This block shows two turns in one. It 
+                button.Content = "X";
+                turnBlock.Text = "   Computer Thinking..";
+                CheckForWinner();//Checks to see if player 1 had just won or not
 
-                    //This is when it's the computers turn
-                    if (winner == false)//If player 1 did not just win
-                    {
-                        await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
-                        if (winner == false)//This checks again that player 1 did not just win, it uses the time to check for a winner. 
-                        {//Sometimes it would still run even when player 1 had won, so this just checks again to make sure. 
-                            PlayRandom();
-                            turnBlock.Text = "      It's Player 1 Turn!";
-                            isPlayer1Turn = true;
-                            count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
+                //This starts the computers turn. 
+                //If player 1 just won, the computer plays their turn first in the next round.
 
-                        }
-                    }
+                await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
+                PlayRandom();
+                turnBlock.Text = "      It's Player 1 Turn!";
+                count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
 
-                }
             }
 
             CheckForWinner();
-            //winner = false;
             count++;
 
 
@@ -111,7 +101,7 @@ namespace TicTacToe
             //Changes the game mode to PVP instead of PVComp
             BtnNewGame_Click(null, null);
             isRandomGame = false;
-            modeBlock.Text = "PVP Mode";
+            modeBlock.Text = "    PVP Mode";
         }
 
         private void ComputerButton_Click(object? sender, RoutedEventArgs? e)
@@ -131,7 +121,7 @@ namespace TicTacToe
                 button.Content = "";
                 button.Foreground = Brushes.Black;
             }
-            isPlayer1Turn = true; //Changes it to Player 1 turn for new game
+            isPlayer1Turn = true; //Changes it to player 1 turn for new game
             turnBlock.Text = "New Game! Player 1 starts."; //Resets the text block
             count = 0;//Starts over counter
             winner = false;
@@ -150,7 +140,6 @@ namespace TicTacToe
             winner = true;
             BtnNewGame_Click(null, null);//Starts a new game
         }
-
 
 
         private async void CheckForWinner()
