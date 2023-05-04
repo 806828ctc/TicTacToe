@@ -58,21 +58,26 @@ namespace TicTacToe
             }
             else//PVComp mode 
             {
-                //This block shows two turns in one. It 
-                button.Content = "X";
-                turnBlock.Text = "   Computer Thinking..";
-                CheckForWinner();//Checks to see if player 1 had just won or not
-
-                //This starts the computers turn. 
-                //If player 1 just won, the computer plays their turn first in the next round.
-                if (!winner)
+                if (isPlayer1Turn)
                 {
-                    await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
+                    //This block shows two turns in one. It 
+                    button.Content = "X";
+                    turnBlock.Text = "   Computer Thinking..";
+                    isPlayer1Turn = false;
+                    CheckForWinner();//Checks to see if player 1 had just won or not
+
+                    //This starts the computers turn. 
+                    //If player 1 just won, the computer plays their turn first in the next round.
                     if (!winner)
                     {
-                        PlayRandom();
-                        turnBlock.Text = "      It's Player 1 Turn!";
-                        count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
+                        await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
+                        if (!winner)
+                        {
+                            PlayRandom();
+                            turnBlock.Text = "      It's Player 1 Turn!";
+                            isPlayer1Turn = true;
+                            count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
+                        }
                     }
                 }
             }
