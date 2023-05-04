@@ -21,15 +21,15 @@
             <ColumnDefinition Width="135*"/>
             <ColumnDefinition Width="25*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btn00" Content="" Grid.Row="1" Grid.Column="1" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn01" Content="" Grid.Row="1" Grid.Column="3" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn02" Content="" Grid.Row="1" Grid.Column="5" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn10" Content="" Grid.Row="3" Grid.Column="1" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn11" Content="" Grid.Row="3" Grid.Column="3" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn12" Content="" Grid.Row="3" Grid.Column="5" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn20" Content="" Grid.Row="5" Grid.Column="1" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn21" Content="" Grid.Row="5" Grid.Column="3" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
-        <Button x:Name="btn22" Content="" Grid.Row="5" Grid.Column="5" FontSize="45" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn00" Content="" Grid.Row="1" Grid.Column="1" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn01" Content="" Grid.Row="1" Grid.Column="3" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn02" Content="" Grid.Row="1" Grid.Column="5" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn10" Content="" Grid.Row="3" Grid.Column="1" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn11" Content="" Grid.Row="3" Grid.Column="3" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn12" Content="" Grid.Row="3" Grid.Column="5" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn20" Content="" Grid.Row="5" Grid.Column="1" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn21" Content="" Grid.Row="5" Grid.Column="3" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
+        <Button x:Name="btn22" Content="" Grid.Row="5" Grid.Column="5" FontSize="50" Click="Button_Click" Background="#FFB8D7EF"/>
 
         <Button x:Name="BtnNewGame" Content="New Game" Grid.Row="6" Margin="17,21,12,16" Click="BtnNewGame_Click" FontSize="18" RenderTransformOrigin="0.488,-0.181" Grid.Column="2" Background="#FF8CF5AF" Grid.ColumnSpan="3"/>
         <Button x:Name="PlayerButton" Content="Player VS Player" HorizontalAlignment="Left" Margin="15,14,0,0" Grid.Row="6" VerticalAlignment="Top" Width="140" Click="PlayerButton_Click" Height="30" FontSize="16" Background="#FF8CF5AF" Grid.Column="1"/>

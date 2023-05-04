@@ -65,12 +65,16 @@ namespace TicTacToe
 
                 //This starts the computers turn. 
                 //If player 1 just won, the computer plays their turn first in the next round.
-
-                await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
-                PlayRandom();
-                turnBlock.Text = "      It's Player 1 Turn!";
-                count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
-
+                if (!winner)
+                {
+                    await Task.Delay(1000);//Stops code from running for a second, so the computer doesn't make their play immediately after player 1 does.
+                    if (!winner)
+                    {
+                        PlayRandom();
+                        turnBlock.Text = "      It's Player 1 Turn!";
+                        count++;//This is player 1 turn and the computers turn in one block, so if the computer plays this needs to be increased as well.
+                    }
+                }
             }
 
             CheckForWinner();
